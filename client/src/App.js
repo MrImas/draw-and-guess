@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import Welcome from './pages/Welcome';
-import ChooseWord from './ChooseWord';
+import ChooseWord from './pages/ChooseWord';
 import Drawing from './pages/Drawing';
 import Guessing from './pages/Guessing';
 
