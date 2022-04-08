@@ -82,7 +82,7 @@ io.on('connection', (socket) => {
 
 mongoose
   .connect(
-    `mongodb+srv://ofir:ehO3LLdVQjJrGTtD@draw-and-guess.r5ozk.mongodb.net/draw-and-guess?retryWrites=true&w=majority`,
+    `mongodb+srv://ofir:${process.env.DB_PASSWORD}@draw-and-guess.r5ozk.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
     { useNewUrlParser: true }
   )
   .then(() => {
