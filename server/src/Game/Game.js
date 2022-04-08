@@ -22,8 +22,14 @@ export class Game {
   startGame(playerIdTurnToGuess, userNameToGuess) {
     this.playerIdTurnToGuess = playerIdTurnToGuess;
     this.userNameToGuess = userNameToGuess;
-    io.to(this.playerIdTurnToDraw).emit('start_game', { yourTurn: true });
-    io.to(this.playerIdTurnToGuess).emit('start_game', { yourTurn: false });
+    io.to(this.playerIdTurnToDraw).emit('start_game', {
+      yourTurn: true,
+      opponentName: this.userNameToGuess,
+    });
+    io.to(this.playerIdTurnToGuess).emit('start_game', {
+      yourTurn: false,
+      opponentName: this.userNameToDraw,
+    });
   }
 
   chosenLevel(level) {

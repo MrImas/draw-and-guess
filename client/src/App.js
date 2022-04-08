@@ -8,16 +8,15 @@ import Drawing from './pages/Drawing';
 import Guessing from './pages/Guessing';
 
 import './App.css';
-import LoadingSpinner from './components/LoadingSpinner';
+import GameData from './components/GameData';
+import StyledLoadingSpinner from './components/UI/LoadingSpinner/StyledLoadingSpinner';
 
 const theme = createTheme({
   palette: {
     primary: {
-      // Purple and green play nicely together.
       main: purple[500],
     },
     secondary: {
-      // This is green.A700 as hex.
       main: '#11cb5f',
     },
   },
@@ -33,7 +32,7 @@ function App() {
   const [userName, setUserName] = useState('');
   const [startGame, setStartGame] = useState(false);
   const [isYourTurn, setIsYourTurn] = useState(false);
-  const [level, setLevel] = useState('');
+  const [opponentName, setOpponentName] = useState('');
   const [chosenWord, setChosenWord] = useState('');
   const [levelPoints, setLevelPoints] = useState(1);
   const [finishedDrawing, setFinishedDrawing] = useState(false);
@@ -46,6 +45,7 @@ function App() {
     socket.on('start_game', (data) => {
       setStartGame(true);
       setIsYourTurn(data.yourTurn);
+      setOpponentName(data.opponentName);
     });
 
     socket.on('word_to_draw', (data) => {
@@ -127,32 +127,32 @@ function App() {
           />
         )}
         {joinedGame && userName && room && (
-          <>
-            <h2>
-              Hey {userName}! You are playing in room named: {room}
-            </h2>
-            <h3>You have {points} points in total!</h3>
-          </>
+          <GameData
+            userName={userName}
+            room={room}
+            points={points}
+            opponentName={opponentName}
+          />
         )}
-        {joinedGame && !startGame && (
+        {/* {joinedGame && !startGame && (
           <LoadingSpinner
             message='waiting for another player to join room...'
             spinnerProps={{ size: 50 }}
           />
-        )}
+        )} */}
         {startGame && isYourTurn && <ChooseWord chooseLevel={chooseLevel} />}
         {startGame && !isYourTurn && !finishedDrawing && (
-          <LoadingSpinner
+          <StyledLoadingSpinner
             message='wait until your opponent finish drawing...'
             spinnerProps={{ size: 50 }}
           />
         )}
         {chosenWord && isYourTurn && (
           <>
-            <h1>Your word to draw is: {chosenWord}</h1>
             <Drawing
               socket={socket}
               room={room}
+              chosenWord={chosenWord}
               onFinishDrawing={finishDrawing}
             />
           </>

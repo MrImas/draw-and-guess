@@ -31,9 +31,7 @@ const Canvas = ({ canvasRef }) => {
     } else {
       const touch = event.touches[0];
       [x, y] = getMousePosRelativeForCanvas(touch.clientX, touch.clientY);
-      console.log(`pos relative to canvas: x= ${x}, y=${y}`);
     }
-    console.log(`x= ${x}, y= ${y}`);
     ctxRef.current.moveTo(x, y);
     setIsDrawing(true);
   };

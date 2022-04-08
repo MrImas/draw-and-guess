@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 
 import Canvas from '../components/Canvas';
+import StyledButton from '../components/UI/Button/StyledButton';
+import StyledTypography from '../components/UI/Typography/StyledTypography';
 
-const Drawing = ({ socket, room, onFinishDrawing }) => {
+const Drawing = ({ socket, room, onFinishDrawing, chosenWord }) => {
   const canvasRef = useRef(null);
 
   const sendDrawingToOtherPlayer = () => {
@@ -13,8 +15,13 @@ const Drawing = ({ socket, room, onFinishDrawing }) => {
 
   return (
     <div>
+      <StyledTypography style={{ variant: 'h5' }}>
+        Your word to draw is: {chosenWord}
+      </StyledTypography>
       <Canvas canvasRef={canvasRef} />
-      <button onClick={sendDrawingToOtherPlayer}>Send Your Drawing</button>
+      <StyledButton style={{}} onClick={sendDrawingToOtherPlayer}>
+        Send Your Drawing
+      </StyledButton>
     </div>
   );
 };

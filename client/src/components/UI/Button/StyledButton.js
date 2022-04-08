@@ -4,12 +4,14 @@ import Button from '@mui/material/Button';
 const StyledButton = ({ style, onClick, children }) => {
   return (
     <Button
-      variant={style.variant || 'contained'}
       onClick={onClick}
+      variant={style.variant || 'contained'}
       disabled={style.disabled || false}
       size={style.size || 'small'}
+      value={style.value || null}
+      sx={{ margin: style.margin || 0 }}
     >
-      {children}
+      {children || style.value || ''}
     </Button>
   );
 };

@@ -3,7 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const LoadingSpinner = ({ message, spinnerProps }) => {
+const StyledLoadingSpinner = ({ message, spinnerProps }) => {
   return (
     <Box sx={{ display: 'flex-column' }}>
       <Typography component='h1' variant='h5'>
@@ -14,4 +14,4 @@ const LoadingSpinner = ({ message, spinnerProps }) => {
   );
 };
 
-export default LoadingSpinner;
+export default StyledLoadingSpinner;
