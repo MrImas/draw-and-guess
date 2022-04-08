@@ -12,20 +12,28 @@ const Canvas = ({ canvasRef }) => {
     const ctx = canvas.getContext('2d');
     ctx.lineCap = 'round';
     ctx.strokeStyle = 'black';
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 2;
     ctxRef.current = ctx;
-  }, []);
+  }, [canvasRef]);
 
   const getMousePosRelativeForCanvas = (eventX, eventY) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const x = eventX - rect.left;
     const y = eventY - rect.top;
-    return { x, y };
+    return [x, y];
   };
 
   const startDrawing = (event) => {
     ctxRef.current.beginPath();
-    const { x, y } = getMousePosRelativeForCanvas(event.pageX, event.pageY);
+    let x, y;
+    if (event.type.includes('mouse')) {
+      [x, y] = getMousePosRelativeForCanvas(event.clientX, event.clientY);
+    } else {
+      const touch = event.touches[0];
+      [x, y] = getMousePosRelativeForCanvas(touch.clientX, touch.clientY);
+      console.log(`pos relative to canvas: x= ${x}, y=${y}`);
+    }
+    console.log(`x= ${x}, y= ${y}`);
     ctxRef.current.moveTo(x, y);
     setIsDrawing(true);
   };
@@ -37,7 +45,13 @@ const Canvas = ({ canvasRef }) => {
 
   const draw = (event) => {
     if (!isDrawing) return;
-    const { x, y } = getMousePosRelativeForCanvas(event.pageX, event.pageY);
+    let x, y;
+    if (event.type.includes('mouse')) {
+      [x, y] = getMousePosRelativeForCanvas(event.pageX, event.pageY);
+    } else {
+      const touch = event.touches[0];
+      [x, y] = getMousePosRelativeForCanvas(touch.clientX, touch.clientY);
+    }
     ctxRef.current.lineTo(x, y);
     ctxRef.current.stroke();
   };
@@ -48,6 +62,9 @@ const Canvas = ({ canvasRef }) => {
       onMouseDown={startDrawing}
       onMouseUp={finishDrawing}
       onMouseMove={draw}
+      onTouchStart={startDrawing}
+      onTouchEnd={finishDrawing}
+      onTouchMove={draw}
       ref={canvasRef}
       style={{ border: '1px solid #000000' }}
     />
