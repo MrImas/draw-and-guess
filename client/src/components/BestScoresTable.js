@@ -23,7 +23,7 @@ const BestScoresTable = () => {
   }, []);
   return (
     <>
-      {bestScores.length && (
+      {bestScores.length > 0 && (
         <StyledTable
           rowsData={bestScores.map((score) => {
             return {

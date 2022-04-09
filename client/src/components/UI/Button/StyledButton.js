@@ -10,6 +10,7 @@ const StyledButton = ({ style, onClick, children }) => {
       size={style.size || 'small'}
       value={style.value || null}
       sx={{ margin: style.margin || 0 }}
+      type={style.type || 'button'}
     >
       {children || style.value || ''}
     </Button>

@@ -12,7 +12,7 @@ import StyledTypography from '../Typography/StyledTypography';
 
 const StyledTable = ({ rowsData, title, tableLabel, headerRow }) => {
   return (
-    <>
+    <div>
       {title && (
         <StyledTypography style={{ variant: 'h5' }}>{title}</StyledTypography>
       )}
@@ -35,6 +35,7 @@ const StyledTable = ({ rowsData, title, tableLabel, headerRow }) => {
                   if (key !== 'id') {
                     return <TableCell key={row.id + key}>{row[key]}</TableCell>;
                   }
+                  // eslint-disable-next-line array-callback-return
                   return;
                 })}
               </StyledTableRow>
@@ -42,7 +43,7 @@ const StyledTable = ({ rowsData, title, tableLabel, headerRow }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };
 

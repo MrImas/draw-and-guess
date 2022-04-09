@@ -1,4 +1,5 @@
 import React from 'react';
+import StyledButton from '../components/UI/Button/StyledButton';
 import StyledCard from '../components/UI/Card/StyledCard';
 import StyledTextField from '../components/UI/TextField/StyledTextField';
 
@@ -12,13 +13,18 @@ const Guessing = ({ drawToGuess, onSubmitGuess, onChangeGuess }) => {
           style={{
             type: 'text',
             id: 'guessInput',
-            label: 'guess',
-            placeHolder: 'your guess...',
+            label: `what's your guess?`,
+            placeholder: 'your guess...',
             size: 'large',
           }}
         />
-        <label htmlFor='guessInput'>What's your guess??</label>
-        <input type='submit' />
+        <StyledButton
+          style={{
+            type: 'submit',
+          }}
+        >
+          Send Your Guess
+        </StyledButton>
       </form>
     </StyledCard>
   );

@@ -1,5 +1,5 @@
 import { io } from '../index.js';
-import { LEVELS_POINTS } from '../utils/constants.js';
+import { LEVELS_POINTS, WRONG_GUESS_MESSAGE } from '../utils/constants.js';
 import { generateWordByLevel } from '../utils/generateWord.js';
 import { scoreModel } from '../models/Score.model.js';
 
@@ -62,7 +62,7 @@ export class Game {
           userName: this.userNameToGuess,
           socketId: this.playerIdTurnToGuess,
           score: this.levelPoints,
-          timeGuessingInSeconds: this.durationGuessing,
+          timeGuessingInSeconds: this.durationGuessing.toFixed(),
         });
       }
       io.to(this.playerIdTurnToGuess).emit('earned_points', {
@@ -70,6 +70,10 @@ export class Game {
       });
       io.to(this.room).emit('finished_game');
       this.resetGame();
+    } else {
+      io.to(this.playerIdTurnToGuess).emit('wrong_guess', {
+        message: WRONG_GUESS_MESSAGE,
+      });
     }
   }
 

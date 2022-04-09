@@ -1,8 +1,6 @@
 import React from 'react';
-import { Typography } from '@mui/material';
 
 import BestScoresTable from '../components/BestScoresTable';
-
 import classes from './Welcome.module.css';
 import StyledButton from '../components/UI/Button/StyledButton';
 import StyledTextField from '../components/UI/TextField/StyledTextField';

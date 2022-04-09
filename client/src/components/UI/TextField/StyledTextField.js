@@ -8,7 +8,7 @@ const StyledTextField = ({ style, onChange }) => {
       id={style.id || ''}
       label={style.label || ''}
       placeholder={style.placeholder || ''}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={onChange ? (event) => onChange(event.target.value) : null}
       type={style.type || 'text'}
       size={style.size || 'small'}
       sx={style.sx || { margin: 2 }}

@@ -10,6 +10,7 @@ import Guessing from './pages/Guessing';
 import './App.css';
 import GameData from './components/GameData';
 import StyledLoadingSpinner from './components/UI/LoadingSpinner/StyledLoadingSpinner';
+import { Container } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -57,6 +58,10 @@ function App() {
       setFinishedDrawing(true);
     });
 
+    socket.on('wrong_guess', (data) => {
+      alert(data.message);
+    });
+
     socket.on('finished_game', () => {
       setFinishedGame(true);
     });
@@ -71,6 +76,8 @@ function App() {
       if (!isYourTurn) {
         setPoints((prevPts) => prevPts + levelPoints);
         alert('You guessed it champ!!!!!');
+      } else {
+        alert('Your opponent guessed the word correctly.');
       }
       setFinishedGame(false);
       setIsYourTurn((prevTurn) => !prevTurn);
@@ -110,64 +117,58 @@ function App() {
     socket.emit('guess', { guess, room });
   };
 
-  const guessHandler = (event) => {
-    setGuess(event.target.value);
-  };
-
   return (
     <ThemeProvider theme={theme}>
-      <div className='App'>
-        {!joinedGame && (
-          <Welcome
-            onJoin={joinGame}
-            chooseRoom={chooseRoom}
-            chooseUserName={chooseUserName}
-            isRoomChosen={room.length > 0}
-            isUserNameChosen={userName.length > 0}
-          />
-        )}
-        {joinedGame && userName && room && (
-          <GameData
-            userName={userName}
-            room={room}
-            points={points}
-            opponentName={opponentName}
-          />
-        )}
-        {/* {joinedGame && !startGame && (
-          <LoadingSpinner
-            message='waiting for another player to join room...'
-            spinnerProps={{ size: 50 }}
-          />
-        )} */}
-        {startGame && isYourTurn && <ChooseWord chooseLevel={chooseLevel} />}
-        {startGame && !isYourTurn && !finishedDrawing && (
-          <StyledLoadingSpinner
-            message='wait until your opponent finish drawing...'
-            spinnerProps={{ size: 50 }}
-          />
-        )}
-        {chosenWord && isYourTurn && (
-          <>
-            <Drawing
-              socket={socket}
-              room={room}
-              chosenWord={chosenWord}
-              onFinishDrawing={finishDrawing}
+      <Container maxWidth='sm'>
+        <div className='App'>
+          {!joinedGame && (
+            <Welcome
+              onJoin={joinGame}
+              chooseRoom={chooseRoom}
+              chooseUserName={chooseUserName}
+              isRoomChosen={room.length > 0}
+              isUserNameChosen={userName.length > 0}
             />
-          </>
-        )}
-        {finishedDrawing && imageToGuess && !isYourTurn && (
-          <Guessing
-            drawToGuess={imageToGuess}
-            onSubmitGuess={guessWord}
-            onChangeGuess={guessHandler}
-          />
-        )}
-        {/* {joinedGame && !isYourTurn && finishedGame && (
-        <h1>You guessed it champ!!!!!</h1>
-      )} */}
-      </div>
+          )}
+          {joinedGame && userName && room && (
+            <GameData
+              userName={userName}
+              room={room}
+              points={points}
+              opponentName={opponentName}
+            />
+          )}
+          {startGame && isYourTurn && (
+            <ChooseWord
+              canChangeWord={!finishedDrawing}
+              chooseLevel={chooseLevel}
+            />
+          )}
+          {startGame && !isYourTurn && !finishedDrawing && (
+            <StyledLoadingSpinner
+              message='wait until your opponent finish drawing...'
+              spinnerProps={{ size: 50 }}
+            />
+          )}
+          {chosenWord && isYourTurn && (
+            <>
+              <Drawing
+                socket={socket}
+                room={room}
+                chosenWord={chosenWord}
+                onFinishDrawing={finishDrawing}
+              />
+            </>
+          )}
+          {finishedDrawing && imageToGuess && !isYourTurn && (
+            <Guessing
+              drawToGuess={imageToGuess}
+              onSubmitGuess={guessWord}
+              onChangeGuess={setGuess}
+            />
+          )}
+        </div>
+      </Container>
     </ThemeProvider>
   );
 }
